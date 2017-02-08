@@ -160,6 +160,18 @@
             .pipe(gulp.dest(DIR.RELEASE))
     });
 
+    //CONCAT
+    gulp.task('_concat', function() {
+        gulp
+            .src([
+                './src/assets/js/_libs-modules/core/*.js',
+                './src/assets/js/_libs-modules/*.js',
+                '!./src/assets/js/_libs-modules/**/_*.js'
+            ])
+            .pipe($.concat('libs.js'))
+            .pipe(gulp.dest('./src/assets/js/'));
+    });
+
     //UGLIFY
     gulp.task('_uglify', function(){
         return gulp
@@ -177,7 +189,7 @@
     gulp.task('default', function(callback){
         runSequence(
             [
-                '_ect',
+                // '_ect',
                 '_browserify',
                 '_sass',
                 '_watch',

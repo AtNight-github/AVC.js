@@ -1,0 +1,135 @@
+body{
+    margin: 0;
+    padding: 0;
+    &.is-modal-locked {
+        overflow: hidden;
+        -ms-touch-action: none;
+        touch-action: none;
+    }
+}
+[data-modal-id],
+[data-modal-close]{
+    cursor: pointer;//FOR IOS 'EVENT DEREGATE' PROBLEM.
+}
+[data-modal-target]{
+    display: none;
+}
+.modal,
+.modal_inner{
+    box-sizing: border-box;
+}
+.modal {
+    position: fixed;
+    z-index: 1001;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+    letter-spacing: -.4em;
+    &:after{
+        display: inline-block;
+        height: 100%;
+        margin-left: -.05em;
+        content: "";
+    }
+    &.is-inited{
+        [data-modal-target]{
+            display: block;
+        }
+    }
+    &.is-enableTouch{
+        &:after{
+            height: calc(100% + 1px);//FOR IOS COMPLETLY LOCK
+        }
+    }
+}
+.modal_inner {
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    transform: translate3d(0,0,0);
+    z-index: 1000;
+    letter-spacing: normal;
+    word-break: break-all;
+    text-size-adjust: 100%;
+    text-align: left;
+}
+
+//DEFAULT ANIMATION SETING
+@mixin modal-setting(
+    $id: 'modal',
+    $width: 80%,
+    $overlayColor: rgba(0, 0, 0, .8),
+    $align: ( vertical: middle, horizon: center ),
+    $space: 20px,
+    $speed: ( open: .3, close: .3 ),
+    $ease: ( open: ease, close: ease ),
+    $delay: ( open: 0, close: 0 ),
+    $keyframes-open-from: ( opacity: 0 ),
+    $keyframes-open-to: ( opacity: 1 ),
+    $keyframes-close-from: ( opacity: 1 ),
+    $keyframes-close-to: ( opacity: 0 )
+) {
+    .#{$id} {
+        text-align: map-get($align, horizon);
+        background-color: $overlayColor;
+        &.is-opening {
+            animation: #{$id}-open map-get($speed, open)+s map-get($ease, open) map-get($delay, open)+s 1 forwards;
+        }
+        &.is-closing {
+            animation: #{$id}-close map-get($speed, close)+s map-get($ease, close) map-get($delay, close)+s 1 forwards;
+        }
+        &:after{
+            vertical-align: map-get($align, vertical);
+        }
+    }
+    .#{$id}_inner{
+        max-width: $width;
+        padding: $space;
+        vertical-align: map-get($align, vertical);
+    }
+    @keyframes #{$id}-open {
+        from {
+            @each $property, $val in $keyframes-open-from {
+                #{$property}: $val;
+            }
+        }
+        to {
+            @each $property, $val in $keyframes-open-to {
+                #{$property}: $val;
+            }
+        }
+    }
+    @keyframes #{$id}-close {
+        from {
+            @each $property, $val in $keyframes-close-from {
+                #{$property}: $val;
+            }
+        }
+        to {
+            @each $property, $val in $keyframes-close-to {
+                #{$property}: $val;
+            }
+        }
+    }
+}
+
+
+
+/*------------------------------------------------
+    TEST USE
+------------------------------------------------*/
+@include modal-setting(
+    $id: 'modal01',
+    $width: 100%
+);
+
+@include modal-setting(
+    $id: 'modal02',
+    $space: 0,
+    $overlayColor: rgba(255,10,20,.6)
+);
