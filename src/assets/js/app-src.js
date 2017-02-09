@@ -1,15 +1,9 @@
-import * as utility from '../utility/index';
+import * as modules from './_app-modules/index';
 
 class App{
     constructor() {
-        this.animation = animation;
-        this.dom = dom;
-        this.event = event;
-        this.geom = geom;
-        this.loader = loader;
-        this.ui = ui;
-        this.utility = utility;
+        this.modules = modules;
     }
 }
 
-window.AVC = new App();
+window.APP = new App();
