@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    </head>
+    <body>
+
+        <script src="/assets/js/libs.js"></script>
+        <script src="/assets/js/app-build.js"></script>
+        <script type="text/javascript">
+            _.each(APP.env, function (v, k) {
+                // console.log(v, k);
+                $('body').append('<p style="text-align: center; background-color: grey; color: #fff;">['+ k +']</p>');
+
+                _.each(v, function(v, k){
+                    // console.log(v, k);
+                    if(v === true){
+                        $('body').append('<p><strong>・'+ k +'</strong></p>');
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
