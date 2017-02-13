@@ -5,16 +5,48 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </head>
     <body>
+        <h1>Watcher</h1>
+        <p>see & try console...</p>
+        <h1>env</h1>
 
         <script src="/assets/js/libs.js"></script>
         <script src="/assets/js/app-build.js"></script>
         <script type="text/javascript">
+            //Watcher
+
+            var arr = [0, 1, 2, 4];
+            var observer = new ArrayObserver(arr);
+            observer.open(function(splices) {
+                console.log('a!!!!!!!!!!!');
+              // respond to changes to the elements of arr.
+              splices.forEach(function(splice) {
+                  console.log('a!!!!!!!!!!!');
+                // splice.index; // the index position that the change occurred.
+                // splice.removed; // an array of values representing the sequence of removed elements
+                // splice.addedCount; // the number of elements which were inserted.
+              });
+            });
+            observer.deliver(function(){
+                console.log('aaaaa');
+            });
+            // var watcher1_target = {
+            //      a: 'a',
+            //      b: ['b1', 'b2', 'b3']
+            //  };
+            // var watcher1 = new APP.Watcher({
+            //     target: watcher1_target,
+            //     onChange: function(newvalue, oldvalue){
+            //         console.log('watcher1 change!!! [new]=>'+ newvalue + ' [old]=>' + oldvalue);
+            //     }
+            // });
+            // watcher1.init();
+
+
+            //ENV
             _.each(APP.env, function (v, k) {
-                // console.log(v, k);
                 $('body').append('<p style="text-align: center; background-color: grey; color: #fff;">['+ k +']</p>');
 
                 _.each(v, function(v, k){
-                    // console.log(v, k);
                     if(v === true){
                         $('body').append('<p><strong>・'+ k +'</strong></p>');
                     }

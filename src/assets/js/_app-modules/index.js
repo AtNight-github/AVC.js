@@ -22,4 +22,4 @@ export { default as eventCenter } from './utility/eventCenter';
 export { default as Geom } from './utility/Geom';
 export { default as Loader } from './utility/Loader';
 export { default as Timeline } from './utility/Timeline';
-export { default as ValWatcher } from './utility/ValWatcher';
+export { default as Watcher } from './utility/Watcher';

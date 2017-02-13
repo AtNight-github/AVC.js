@@ -190,6 +190,7 @@
         runSequence(
             [
                 // '_ect',
+                '_concat',
                 '_browserify',
                 '_sass',
                 '_watch',

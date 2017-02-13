@@ -1,11 +1,21 @@
-
-
+/**=======================================================================
+ * [ Env ]
+ * クライアントのUAなど環境情報を取得する。
+ * ブラウザ、デバイス、エンジン、OSおよび各機能を調べる。
+ * 基本的に全てのプロパティは{boolean}を返却する。
+ * UAParser.jsに依存するため先読みすること。
+ *
+ * (例)
+ * APP.env.browser.isSafari・・・Safariかどうか
+ * APP.env.device.isIphone・・・iPhoneかどうか
+ * APP.env.support.canvas・・・canvasに　対応しているかどうか
+ =======================================================================*/
 class Env{
     constructor() {
         let ua = navigator.userAgent.toLowerCase();
         let ver = navigator.appVersion.toLowerCase();
         const uaParser = new UAParser();
-        
+
         this.browser = {};
         this.device = {};
         this.engine = {};
@@ -48,27 +58,6 @@ class Env{
         this.os.isMac = (os.name === 'Mac OS');
 
         //SUPPORT
-        const detectCSSFeature = (featurename)=>{
-            var feature = false,
-                domPrefixes = 'Webkit Moz ms O'.split(' '),
-                elm = document.createElement('div'),
-                featurenameCapital = null;
-
-                featurename = featurename.toLowerCase();
-
-                if( elm.style[featurename] !== undefined ) { feature = true; }
-
-                if( feature === false ) {
-                    featurenameCapital = featurename.charAt(0).toUpperCase() + featurename.substr(1);
-                    for( var i = 0; i < domPrefixes.length; i++ ) {
-                        if( elm.style[domPrefixes[i] + featurenameCapital ] !== undefined ) {
-                          feature = true;
-                          break;
-                        }
-                    }
-                }
-                return feature;
-        };
         this.support.canvas = (()=>{
             let canvas = document.createElement('canvas');
             return !!(canvas.getContext && canvas.getContext('2d'));
@@ -79,12 +68,42 @@ class Env{
             return (gl && gl instanceof WebGLRenderingContext) ? true : false;
         })();
         this.support.svg = typeof SVGRect != "undefined";
-        this.support.cssTransition = detectCSSFeature('transition');
-        this.support.cssAnimation = detectCSSFeature('animation');
+        this.support.cssTransition = this._detectCSSFeature('transition');
+        this.support.cssAnimation = this._detectCSSFeature('animation');
         this.support.hashchange = ("onhashchange" in window);
         this.support.history = (window.history && window.history.pushState);
         this.support.requestAnimationFrame = (typeof requestAnimationFrame !== 'undefined');
         this.support.touchEvent = 'ontouchstart' in document.documentElement;
+    }
+
+    /**
+     * [ _detectCSSFeature ]
+     * CSS3アニメーションの対応を調べる。
+     * https://developer.mozilla.org/ja/docs/Web/CSS/CSS_Animations/Detecting_CSS_animation_support
+     *
+     * @param {string} featurename・・・transitionかanimationのみ
+     * @return {boolean}・・・対応しているかどうか
+     */
+    _detectCSSFeature(featurename){
+        let feature = false;
+        let domPrefixes = 'Webkit Moz ms O'.split(' ');
+        let elm = document.createElement('div');
+        let featurenameCapital = null;
+
+        featurename = featurename.toLowerCase();
+
+        if( elm.style[featurename] !== undefined ) { feature = true; }
+        if( feature === false ) {
+            featurenameCapital = featurename.charAt(0).toUpperCase() + featurename.substr(1);
+            for( var i = 0; i < domPrefixes.length; i++ ) {
+                if( elm.style[domPrefixes[i] + featurenameCapital ] !== undefined ) {
+                  feature = true;
+                  break;
+                }
+            }
+        }
+
+        return feature;
     }
 }
 

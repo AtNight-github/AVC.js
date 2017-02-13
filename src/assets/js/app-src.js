@@ -2,7 +2,7 @@ import * as modules from './_app-modules/index';
 
 class App{
     constructor() {
-        Object.assign(this, modules)
+        Object.assign(this, modules);
     }
 }
 
