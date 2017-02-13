@@ -1,9 +1,11 @@
-let ua = navigator.userAgent.toLowerCase();
-let ver = navigator.appVersion.toLowerCase();
-const uaParser = new UAParser();
+
 
 class Env{
     constructor() {
+        let ua = navigator.userAgent.toLowerCase();
+        let ver = navigator.appVersion.toLowerCase();
+        const uaParser = new UAParser();
+        
         this.browser = {};
         this.device = {};
         this.engine = {};
@@ -12,12 +14,7 @@ class Env{
 
         //BROWSER
         const browser = uaParser.getResult().browser;
-
-
-        console.info(browser);
-
         this.browser.isIE = (browser.name === 'IE');
-
         this.browser.isIE9 = (this.browser.isIE && browser.version === '9.0');
         this.browser.isIE10 = (this.browser.isIE && browser.version === '10.0');
         this.browser.isIE11 = (this.browser.isIE && browser.version === '11.0');
@@ -73,13 +70,21 @@ class Env{
                 return feature;
         };
         this.support.canvas = (()=>{
-            let elem = document.createElement('canvas');
-            return !!(elem.getContext && elem.getContext('2d'));
+            let canvas = document.createElement('canvas');
+            return !!(canvas.getContext && canvas.getContext('2d'));
         })();
+        this.support.webGL = (()=>{
+            let canvas = document.createElement("canvas");
+            let gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+            return (gl && gl instanceof WebGLRenderingContext) ? true : false;
+        })();
+        this.support.svg = typeof SVGRect != "undefined";
         this.support.cssTransition = detectCSSFeature('transition');
         this.support.cssAnimation = detectCSSFeature('animation');
         this.support.hashchange = ("onhashchange" in window);
         this.support.history = (window.history && window.history.pushState);
+        this.support.requestAnimationFrame = (typeof requestAnimationFrame !== 'undefined');
+        this.support.touchEvent = 'ontouchstart' in document.documentElement;
     }
 }
 
